@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<title></title>
+<style type="text/css">
+html{ 
+  width:100%;
+  height:100%; 
+  background-color: rgb(26,29,33);
+  /* javascript background selector below */
+  /* background-image: url(backgroundDefault.jpg); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: bottom right;
+}
+body {
+  color: white;
+  text-shadow: 2px 2px #000000;
+  font-size: 22pt;
+  font-family: "Trebuchet MS";
+  overflow: hidden;
+}
+div.full {
+  margin: 0;
+  padding: 0;
+  height: 100sh;
+  width: 100%;
+  text-align: right;
+  overflow: hidden;
+}
+div.middle {
+  padding-top: 5%;
+  padding-right: 2em;
+  padding-left: 2em;
+  vertical-align: middle;
+  line-height: normal;
+}
+.hostname {
+  font-size: larger;
+  font-weight: bold;
+  font-family: "Segoe UI Semibold";
+}
+.left {
+  float: left;
+  width: 30%;
+  text-align: left;
+}
+.legal {
+  font-size: small;
+  line-height: auto; 
+  text-shadow: 1px 1px #000000;
+}
+p { margin: 0; }
+img.qr {
+  image-rendering: pixelated;
+}
+.grey { color: #888888; }
+.dkgrey { color: #444444; }
+.ltgrey { color: #AAAAAA; }
+.white { color: #white; }
+.blue { color: #blue; }
+.black { color: #black; }
+</style>
+<script type="text/javascript">
+function fileExists(imageSrc, good, bad) {
+    var img = new Image();
+    img.onload = good; 
+    img.onerror = bad;
+    img.src = imageSrc;
+}
+/* 
+ * Set background image based on aspect ratio (@media queries don't work in wkhtmltoimage)
+ * Images:
+ * 16/9  screen: background1.78.jpg
+ * 16/10 screen: background1.6.jpg
+ * 5/4   screen: background1.25.jpg
+ * 4/3   screen: background1.33.jpg
+ * etc. For whatever custom images you need.
+ * If you don't have a specific image for the calculated aspect ratio backgroundDefault.jpg is used if available.
+ */
+function bg(){
+  var h=document.getElementsByTagName('html')[0];
+  var ar = Math.round((screen.width / screen.height)*100) / 100; //aspect ratio rounded to 2 decimal places
+  fileExists("background"+ar+".jpg",function(){h.style.backgroundImage="url(background"+ar+".jpg)"},defaultbg);
+}
+
+function defaultbg() {
+  var h=document.getElementsByTagName('html')[0];
+  fileExists("backgroundDefault.jpg",function(){h.style.backgroundImage="url(backgroundDefault.jpg)"});
+}
+</script>
+</head>
+<body onload="bg();">
+<div class="full">
+<div class="middle left">
+<p class="legal">This is a private information system; system usage may be monitored, recorded, and subject to audit; 
+unauthorized use of the system is prohibited and subject to criminal and civil penalties; 
+use of the system indicates consent to monitoring and recording.</p>
+</div>
+<div class="middle">
+<p class="hostname">$Hostname</p>
+<p class="domain">$($TcpIpParameters.Domain)</p>
+<p class="system">$($COMPUTERSYSTEM.Manufacturer) $($COMPUTERSYSTEM.Model)</p>
+<p class="inventory"><!--  $(if($SerialNum){"-->S/N: $SerialNum<!-- "})--> <!-- $(if($AssetTag){"-->Tag: $AssetTag<!-- "})--></p>
+<p class="osinfo">$($OPERATINGSYSTEM.Caption)(Build $($OPERATINGSYSTEM.BuildNumber))</p>
+<p class="info">$($Contact -join '<br/>')</p>
+<!-- $(if($SerialNum){ Generate_QR -Data $SerialNum -ImageFile "$PWD/SerialNum.png" -PixelSize 8 -DarkColor (255,255,255,255) -LightColor (0,0,0,0); "--><img src='SerialNum.png' class='qr serialnum'/><br/><!--" })-->
+<!-- $(if($AssetTag){ Generate_QR -Data $AssetTag -ImageFile "$PWD/AssetTag.png" -PixelSize 8 -DarkColor (255,255,255,255) -LightColor (0,0,0,0); "--><img src='AssetTag.png' class='qr assettag'/><br/><!--" })-->
+</div>
+</div>
+</body>
+</html>
