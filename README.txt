@@ -9,7 +9,8 @@ Defaults and files:
 format.html - example/default content
 LockScreenInfo.ps1 - main script file
 LockScreenInfo.cmd - Example launcher
-Both of these are adapted from https://gallery.technet.microsoft.com/scriptcenter/LockScreenInfo-Display-2adfc20b licensed under the MIT license.
+  Both of these are adapted from https://gallery.technet.microsoft.com/scriptcenter/LockScreenInfo-Display-2adfc20b licensed under the MIT license.
+system-inventory-utility.ps1 - Utility file to display/set asset tag information needs additional utilities to store asset tags in system firmware. MIT license.
 
 
 Optional input files:
